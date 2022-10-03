@@ -102,7 +102,7 @@ const SignUpForm = () => {
           value={confirmPassword}
         />
 
-        <Button buttonType="google" type="submit" onClick={handleSubmit}>
+        <Button type="submit" onClick={handleSubmit}>
           Sign up
         </Button>
       </form>
