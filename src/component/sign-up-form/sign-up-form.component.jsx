@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 
 import {
   createAuthUserWithEmailAndPassword,
@@ -8,6 +8,7 @@ import {
 import FormInput from "../form-input/form-input.component";
 import "./sign-up-form.styles.scss";
 import Button from "../button/button.component";
+import { UserContext } from "../../contexts/user.context";
 
 const defaultFormField = {
   displayName: "",
@@ -20,6 +21,7 @@ const SignUpForm = () => {
   const [formFields, setFormFields] = useState(defaultFormField);
   const { displayName, email, password, confirmPassword } = formFields;
 
+  const { setCurrentUser } = useContext(UserContext);
   //   Reset lại form
   const resetForm = () => {
     setFormFields(defaultFormField);
@@ -41,6 +43,9 @@ const SignUpForm = () => {
         email,
         password
       );
+
+      // Lưu trữ user vào context
+      setCurrentUser(user);
 
       //   Gọi createUserDocumentFromAuth và truyền {displayName} để lưu trữ displayName trên firebase
       await createUserDocumentFromAuth(user, { displayName });
