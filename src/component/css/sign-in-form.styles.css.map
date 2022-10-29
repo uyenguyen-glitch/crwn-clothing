@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA,AAAA,kBAAkB,CAAC;EACjB,OAAO,EAAE,IAAI;EACb,cAAc,EAAE,MAAM;EACtB,KAAK,EAAE,KAAK;CAKb;;AARD,AAKE,kBALgB,CAKhB,EAAE,CAAC;EACD,MAAM,EAAE,MAAM;CACf;;AAGH,AAAA,kBAAkB,CAAC;EACjB,OAAO,EAAE,IAAI;EACb,eAAe,EAAE,YAAY;CAC9B",
+    "sources": [
+        "../sign-in-form copy/sign-in-form.styles.scss"
+    ],
+    "names": [],
+    "file": "sign-in-form.styles.css"
+}

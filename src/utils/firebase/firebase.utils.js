@@ -10,7 +10,16 @@ import {
   onAuthStateChanged,
 } from "firebase/auth";
 
-import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
+import {
+  getFirestore,
+  doc,
+  getDoc,
+  setDoc,
+  collection,
+  writeBatch,
+  query,
+  getDocs,
+} from "firebase/firestore";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -33,13 +42,50 @@ googleProvider.setCustomParameters({
 
 export const auth = getAuth();
 
-export const signInWithGoolgePopUp = () =>
+export const signInWithGooglePopup = () =>
   signInWithPopup(auth, googleProvider);
 
 export const signInWithGoolgeRedirect = () =>
   signInWithRedirect(auth, googleProvider);
 
 export const db = getFirestore();
+
+// gồm có 2 đối số:
+// + collectionKey: tên đối số
+// + objectsToAdd: actual document that want to add
+export const addCollectionAndDocument = async (collectionKey, objectsToAdd) => {
+  // collection: tạo collection
+  const collectionRef = collection(db, collectionKey);
+  // create batch
+  const batch = writeBatch(db);
+
+  // Creat and Set object into collection as a new document
+  objectsToAdd.forEach((object) => {
+    const docRef = doc(collectionRef, object.title.toLowerCase());
+    // Set object into specific collection -> because fivebase will give a document reference, even if it doesn't
+    // exist yet. It will just point to place for this specific key inside of our collection
+    batch.set(docRef, object);
+  });
+
+  await batch.commit();
+  console.log("done");
+};
+
+/**
+ * Get products from firebase
+ */
+export const getCategoriesAndDocuments = async () => {
+  const collectionRef = collection(db, "categories");
+  const q = query(collectionRef);
+
+  const querySnapshot = await getDocs(q);
+  const categoryMap = querySnapshot.docs.reduce((acc, docSnapshot) => {
+    const { title, items } = docSnapshot.data();
+    acc[title.toLowerCase()] = items;
+    return acc;
+  }, {});
+  return categoryMap;
+};
 
 // Tạo user từ Authencation
 export const createUserDocumentFromAuth = async (
