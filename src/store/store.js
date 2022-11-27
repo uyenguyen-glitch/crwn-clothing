@@ -3,12 +3,13 @@ import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import { rootReducer } from "./root-reducer";
 import logger from "redux-logger";
+import thunk from "redux-thunk";
 // Redux-persist: to store value into local storage
 // 1: creating persistConfig
 const persistConfig = {
   key: "root",
   storage,
-  blacklist: ["user"],
+  whitelist: ["cart"],
 };
 
 // 2: Creating persistedReducer
@@ -16,9 +17,10 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 // Tạo middleware
 
-const middleWares = [process.env.NODE_ENV === "development" && logger].filter(
-  Boolean
-);
+const middleWares = [
+  process.env.NODE_ENV === "development" && logger,
+  thunk,
+].filter(Boolean);
 
 const composeEnhancer =
   (process.env.NODE_ENV !== "production" &&
